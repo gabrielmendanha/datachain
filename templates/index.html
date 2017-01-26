@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TCC2</title>
+    <link rel="stylesheet" href="/static/index.css">
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
+    <script src="https://use.fontawesome.com/63f0a28234.js"></script>
+</head>
+<body>
+
+<div class = "container">
+    <div class="btn-group btn-group-justified">
+        <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target=".modal">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-default">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-default">Download <i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+    </div>
+</div>
+
+<div class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Upload de Arquivo</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" action="/upload" method="post" enctype=multipart/form-data>
+                    <fieldset>
+                        <legend>Precisamos de sua chave...</legend>
+                        <div class="form-group">
+                            <label for="disabledInput" class="col-lg-2 control-label">Pública</label>
+                            <div class="col-lg-10">
+                                <input id="publicKey" type="text" class="form-control" class="disabledInput" placeholder="" disabled="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="disabledInput" class="col-lg-2 control-label">Privada</label>
+                            <div class="col-lg-10">
+                                <input id="privateKey" type="text" class="form-control" class="disabledInput" placeholder="" disabled="">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-success" id="gerarChaves">Gerar par de chaves</button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fileInput" class="col-lg-2 control-label">Arquivo</label>
+                            <div class="col-lg-10">
+                                <input type="file" class="form-control" class="fileInput" name="file">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-2">
+                                <button type="reset" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type=text/javascript>
+  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('#gerarChaves').click(function () {
+            $.getJSON($SCRIPT_ROOT + '/generateKeys', function(data) {
+                $('#publicKey').val(data.public);
+                $('#privateKey').val(data.private);
+            });
+        });
+    })
+</script>
+
+
+
+
+
+</html>
