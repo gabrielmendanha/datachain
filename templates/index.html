@@ -21,31 +21,31 @@
 <div class="modal">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Upload de Arquivo</h4>
-            </div>
+{#            <div class="modal-header">#}
+{#                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
+{#                <h4 class="modal-title">Upload de Arquivo</h4>#}
+{#            </div>#}
             <div class="modal-body">
-                <form class="form-horizontal" action={{ url_for('upload') }} method="post" enctype=multipart/form-data>
+                <form id="formUpload" class="form-horizontal" action={{ url_for('upload') }} method="POST" enctype=multipart/form-data>
                     <fieldset>
                         <legend>Precisamos de sua chave...</legend>
                         <div class="form-group">
-                            <label for="disabledInput" class="col-lg-2 control-label">Pública</label>
+                            <label for="publicKey" class="col-lg-2 control-label">Pública</label>
                             <div class="col-lg-10">
-                                <input id="publicKey" type="text" class="form-control" class="disabledInput" placeholder="" disabled="">
+                                <input name="pubKey" id="publicKey" type="text" class="form-control input">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="disabledInput" class="col-lg-2 control-label">Privada</label>
+                            <label for="privateKey" class="col-lg-2 control-label">Privada</label>
                             <div class="col-lg-10">
-                                <input id="privateKey" type="text" class="form-control" class="disabledInput" placeholder="" disabled="">
+                                <input name="privKey" id="privateKey" type="text" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                                <button type="reset" class="btn btn-success" id="gerarChaves">Gerar par de chaves</button>
+                                <button type="button" class="btn btn-success" id="gerarChaves">Gerar par de chaves</button>
                             </div>
                         </div>
 
@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
                                 <button type="reset" class="btn btn-default">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="submit" form="formUpload" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </fieldset>
