@@ -26,7 +26,7 @@
                 <h4 class="modal-title">Upload de Arquivo</h4>
             </div>
             <div class="modal-body">
-                <form class="form-horizontal" action="/upload" method="post" enctype=multipart/form-data>
+                <form class="form-horizontal" action={{ url_for('upload') }} method="post" enctype=multipart/form-data>
                     <fieldset>
                         <legend>Precisamos de sua chave...</legend>
                         <div class="form-group">
