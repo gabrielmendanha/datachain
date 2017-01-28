@@ -39,6 +39,8 @@ def upload():
 
         file = request.files['file']
         public_key = request.form['pubKey']
+        type(public_key)
+        print(type(public_key))
         private_key = request.form['privKey']
 
         # Verify if file exists and is valid
@@ -64,15 +66,15 @@ def upload():
                     'Name': ipfs_file['Name']
                 },
             }
-            person = generate_keypair()
+
             prepared_creation_tx = bigchain.transactions.prepare(
                 operation='CREATE',
-                owners_before=person.verifying_key,
+                owners_before=public_key,
                 asset=payload,
             )
 
             fulfilled_creation_tx = bigchain.transactions.fulfill(
-                prepared_creation_tx, private_keys=person.signing_key)
+                prepared_creation_tx, private_keys=private_key)
 
             bigchain.transactions.send(fulfilled_creation_tx)
 
