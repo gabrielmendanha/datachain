@@ -39,8 +39,6 @@ def upload():
 
         file = request.files['file']
         public_key = request.form['pubKey']
-        type(public_key)
-        print(type(public_key))
         private_key = request.form['privKey']
 
         # Verify if file exists and is valid
@@ -85,6 +83,18 @@ def upload():
                 trials += 1
 
             return "ok " + txid + " " + str(bigchain.transactions.status(txid))
+
+
+@app.route('/download', methods=['POST'])
+def download():
+    transaction_id = request.form['tx_id']
+    transaction = bigchain.transactions.retrieve(transaction_id)
+    file_name = transaction['transaction']['asset']['data']['Name']
+    file_hash = transaction['transaction']['asset']['data']['Hash']
+    download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash
+
+    return render_template('download.html', file_name=file_name, download_link=download_link)
+ # c1308d0819f3c740c846e96c3645edc87a8659cff26d32d76a74ca695e13200d
 
 
 def allowed_file(filename):

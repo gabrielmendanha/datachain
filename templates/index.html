@@ -12,19 +12,15 @@
 
 <div class = "container">
     <div class="btn-group btn-group-justified">
-        <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target=".modal">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
+        <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
         <a href="#" class="btn btn-default">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
-        <a href="#" class="btn btn-default">Download <i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
 </div>
 
-<div class="modal">
+<div class="modal" id="modal-upload">
     <div class="modal-dialog">
         <div class="modal-content">
-{#            <div class="modal-header">#}
-{#                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>#}
-{#                <h4 class="modal-title">Upload de Arquivo</h4>#}
-{#            </div>#}
             <div class="modal-body">
                 <form id="formUpload" class="form-horizontal" action={{ url_for('upload') }} method="POST" enctype=multipart/form-data>
                     <fieldset>
@@ -57,8 +53,33 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-2">
+                            <div class="text-center">
                                 <button type="submit" form="formUpload" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-download">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="form-download" class="form-horizontal" action={{ url_for('download') }} method="POST">
+                    <fieldset>
+                        <div class="form-group">
+                            <label for="tx_id" class="col-lg-3 control-label">ID Transação</label>
+                            <div class="col-lg-7">
+                                <input name="tx_id" type="text" class="form-control input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-lg-10 col-lg-offset-5">
+                                <button type="submit" form="form-download" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </fieldset>
@@ -72,7 +93,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type=text/javascript>
-  $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
 </script>
 
 <script>
