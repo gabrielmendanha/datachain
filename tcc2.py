@@ -26,9 +26,10 @@ def index():
 @app.route('/generateKeys')
 def generate_keys():
     person = generate_keypair()
+    print (person)
     key_pair = {
-        "public": person.verifying_key,
-        "private": person.signing_key
+        "public": person.public_key,
+        "private": person.private_key
     }
     return jsonify(key_pair)
 
@@ -67,7 +68,7 @@ def upload():
 
             prepared_creation_tx = bigchain.transactions.prepare(
                 operation='CREATE',
-                owners_before=public_key,
+                signers=public_key,
                 asset=payload,
             )
 
@@ -79,8 +80,14 @@ def upload():
             txid = fulfilled_creation_tx['id']
 
             trials = 0
-            while bigchain.transactions.status(txid).get('status') != 'valid' and trials < 100:
-                trials += 1
+            while trials < 100:
+
+                try:
+                    if bigchain.transactions.status(txid).get('status') == 'valid':
+                        break
+
+                except bigchain.exceptions.NotFoundError:
+                        trials += 1
 
             return "ok " + txid + " " + str(bigchain.transactions.status(txid))
 
