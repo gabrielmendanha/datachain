@@ -13,7 +13,7 @@
 <div class = "container">
     <div class="btn-group btn-group-justified">
         <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
-        <a href="#" class="btn btn-default">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
+        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-transfer">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
         <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
 </div>
@@ -80,6 +80,49 @@
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-5">
                                 <button type="submit" form="form-download" class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modal-transfer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form id="formTransfer" class="form-horizontal" action={{ url_for('transfer') }} method="POST" enctype=multipart/form-data>
+                    <fieldset>
+                        <legend>De</legend>
+
+                        <div class="form-group">
+                            <label for="sender-privateKey" class="col-lg-2 control-label">Privada</label>
+                            <div class="col-lg-10">
+                                <input name="sender-privKey" id="sender-privateKey" type="text" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tx_id_send" class="col-lg-2 control-label">Tx ID</label>
+                            <div class="col-lg-10">
+                                <input name="tx_id_send" type="text" class="form-control input">
+                            </div>
+                        </div>
+
+                        <legend>Para</legend>
+
+                        <div class="form-group">
+                            <label for="dest-publicKey" class="col-lg-2 control-label">Pública</label>
+                            <div class="col-lg-10">
+                                <input name="dest-pubKey" id="dest-publicKey" type="text" class="form-control input">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="text-center">
+                                <button type="submit" form="formTransfer" class="btn btn-primary">Submit</button>
                             </div>
                         </div>
                     </fieldset>

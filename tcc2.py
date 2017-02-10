@@ -9,7 +9,7 @@ import os
 app = Flask(__name__)
 
 UPLOAD_FOLDER = '/uploads/'
-API_ENDPOINT = 'http://localhost:9984/api/v1'
+API_ENDPOINT = 'http://localhost:9984'
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
@@ -26,7 +26,7 @@ def index():
 @app.route('/generateKeys')
 def generate_keys():
     person = generate_keypair()
-    print (person)
+    print(person)
     key_pair = {
         "public": person.public_key,
         "private": person.private_key
@@ -69,7 +69,7 @@ def upload():
             prepared_creation_tx = bigchain.transactions.prepare(
                 operation='CREATE',
                 signers=public_key,
-                asset=payload,
+                asset=payload
             )
 
             fulfilled_creation_tx = bigchain.transactions.fulfill(
@@ -87,7 +87,7 @@ def upload():
                         break
 
                 except bigchain.exceptions.NotFoundError:
-                        trials += 1
+                    trials += 1
 
             return "ok " + txid + " " + str(bigchain.transactions.status(txid))
 
@@ -101,7 +101,60 @@ def download():
     download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash
 
     return render_template('download.html', file_name=file_name, download_link=download_link)
- # c1308d0819f3c740c846e96c3645edc87a8659cff26d32d76a74ca695e13200d
+
+
+@app.route('/transfer', methods=['POST'])
+def transfer():
+    transaction_id = request.form['tx_id_send']
+    sender_private_key = request.form['sender-privKey']
+    dest_public_key = request.form['dest-pubKey']
+    transaction = bigchain.transactions.retrieve(transaction_id)
+
+    if transaction['operation'] == 'TRANSFER':
+        asset_id = transaction['asset']['id']
+    else:
+        asset_id = transaction['id']
+
+    transfer_asset = {
+        'id': asset_id
+    }
+
+    output_index = 0
+    output = transaction['outputs'][output_index]
+
+    transfer_input = {
+        'fulfillment': output['condition']['details'],
+        'fulfills': {
+            'output': output_index,
+            'txid': transaction['id'],
+        },
+        'owners_before': output['public_keys'],
+    }
+
+    prepared_transfer_tx = bigchain.transactions.prepare(
+        operation='TRANSFER',
+        asset=transfer_asset,
+        inputs=transfer_input,
+        recipients=dest_public_key,
+    )
+
+    fulfilled_transfer_tx = bigchain.transactions.fulfill(
+        prepared_transfer_tx,
+        private_keys=sender_private_key,
+    )
+
+    bigchain.transactions.send(fulfilled_transfer_tx)
+
+    return "ok"
+
+    # pair 1
+    # pub 7xaCsyEs3mmoL5cDG73HqHXGxLtrZRm6GGf4Kv4qq2kp
+    # priv 8qmV2CpRr1yxvYnsg8DYpAFZUs9rBMBNUbrfjFc7Kkxz
+    # tx id 80af48990a90c9761e9d2ad29762157dc60fca0ab2c93387bbbee9b708467515
+
+    # pair 2
+    # pub key 3EFKgepf6WFrZ4MjPUz1Wq2vPDAWpq2mazQedSPMnxPb
+    # priv key DQVrgoBQYtvdwcZMRYnJFXjBbygzb72DbuAUz7JxbXA
 
 
 def allowed_file(filename):
