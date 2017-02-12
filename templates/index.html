@@ -10,12 +10,18 @@
 </head>
 <body>
 
+{#<div class = "container">#}
+{#    <div class="btn-group btn-group-justified">#}
+{#        <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>#}
+{#        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-transfer">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>#}
+{#        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>#}
+{#    </div>#}
+{#</div>#}
+
 <div class = "container">
-    <div class="btn-group btn-group-justified">
-        <a href="#" id="upload" class="btn btn-default" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
-        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-transfer">Send <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
-        <a href="#" class="btn btn-default" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>
-    </div>
+    <a class="button" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
+    <a class="button" data-toggle="modal" data-target="#modal-transfer">Transferir <i class="fa fa-handshake-o" aria-hidden="true"></i></a>
+    <a class="button" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>
 </div>
 
 <div class="modal" id="modal-upload">
@@ -149,9 +155,4 @@
         });
     })
 </script>
-
-
-
-
-
 </html>

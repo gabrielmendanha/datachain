@@ -1,7 +1,31 @@
+html {
+    background-image: url("../static/sky.jpeg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+.button {
+    display: inline-block;
+    border: 2px solid dimgrey;
+    margin: 20px;
+    padding: 10px;
+    width: 105px;
+    line-height: 70px;
+    cursor: pointer;
+    color: dimgrey;
+    border-radius: 10%;
+    box-shadow: 0px 0px 5px black;
+}
+
+.button:hover{
+    text-decoration: none;
+    color: dimgrey;
+    box-shadow: 0px 0px 10px black;
+}
 
 .container {
     max-width: 50%;
     position: fixed;
     top: 50%;
-    transform: translate(50%, -25%);
+    transform: translate(63%, -75%);
 }

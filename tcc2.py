@@ -96,11 +96,18 @@ def upload():
 def download():
     transaction_id = request.form['tx_id']
     transaction = bigchain.transactions.retrieve(transaction_id)
-    file_name = transaction['transaction']['asset']['data']['Name']
-    file_hash = transaction['transaction']['asset']['data']['Hash']
+    current_owner = transaction['outputs'][0]['public_keys'][0]
+
+    if transaction['operation'] == 'TRANSFER':
+        transaction = bigchain.transactions.retrieve(transaction['asset']['id'])
+
+    file_name = transaction['asset']['data']['Name']
+    file_hash = transaction['asset']['data']['Hash']
+
     download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash
 
-    return render_template('download.html', file_name=file_name, download_link=download_link)
+    return render_template('download.html', file_name=file_name, download_link=download_link,
+                           current_owner=current_owner)
 
 
 @app.route('/transfer', methods=['POST'])
