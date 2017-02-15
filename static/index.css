@@ -1,6 +1,5 @@
 html {
-    background-image: url("../static/sky.jpeg");
-    background-repeat: no-repeat;
+    background: url("../static/sky.jpeg") no-repeat;
     background-size: 100%;
 }
 
@@ -9,18 +8,19 @@ html {
     border: 2px solid dimgrey;
     margin: 20px;
     padding: 10px;
-    width: 105px;
-    line-height: 70px;
+    width: 103px;
+    line-height: 50px;
+    text-align: center;
     cursor: pointer;
     color: dimgrey;
     border-radius: 10%;
-    box-shadow: 0px 0px 5px black;
+    box-shadow: 0 0 5px black;
 }
 
 .button:hover{
     text-decoration: none;
     color: dimgrey;
-    box-shadow: 0px 0px 10px black;
+    box-shadow: 0 0 10px black;
 }
 
 .container {

@@ -1,0 +1,37 @@
+body {
+    background: url("../static/sky.jpeg") no-repeat;
+    background-size: 100%;
+}
+
+html, body, .container-table {
+    height: 100%;
+}
+
+.container-table {
+    display: table;
+    width: 100%;
+}
+
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.container-fluid {
+    /*border: 1px solid red;*/
+    background: transparent !important;
+}
+
+.file_display {
+    /*border: 1px solid blue;*/
+    width: 90%;
+    height: 90vh;
+}
+
+.panel-body:hover {
+    background-color: whitesmoke;
+}
+
+#download-button:hover {
+    background-color: inherit;
+}

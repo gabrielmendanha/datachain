@@ -3,36 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <title>Download</title>
+     <link rel="stylesheet" href="/static/download.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/63f0a28234.js"></script>
-    <style>
-        .container {
-            max-width: 25%;
-            position: fixed;
-            top: 50%;
-            left:25%;
-            transform: translate(50%, -50%);
-        }
-
-    </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{ file_name }}</h3>
+<div class="container-fluid container-table" style="background:transparent;">
+    <div class="row vertical-center-row">
+
+        <div class="col-md-7">
+            <object class="file_display" data="{{ download_link }}"></object>
         </div>
-        <div class="panel-body">
-            <div class="text-center">
-                <a href={{ download_link }} class="btn btn-success" >Download <i class="fa fa-cloud-download" aria-hidden="true"></i></a>
+
+        <div class="col-md-5">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Detalhes</h3>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
+                    <p>Nome: {{ file_name }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Hash única e imutável para este documento.">
+                    <p>Hash: {{ file_hash }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Data e hora em que a transação foi recebida no sistema. Não reflete necessariamente a hora em que foi incluída na blockchain.">
+                    <p>Upload em: {{ file_timestamp }}</p>
+                </div>
+
+                 <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Chave pública do dono nesta transação, que não é necessariamente o dono atual.">
+                    <p >Dono: {{ current_owner }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="ID desta transação.">
+                    <p >Tx: {{ transaction_id }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Indica de esta transação é considerada válida ou inválida.">
+                    <p >Status: {{ status }}</p>
+                </div>
+
+                <div id="download-button" class="panel-body">
+                    <a href="{{ download_link }}" download="{{ file_name }}" class="btn btn-link">Download</a>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 </body>
+
+<script type="text/javascript">
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
+</script>
+
 </html>

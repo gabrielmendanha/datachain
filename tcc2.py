@@ -2,8 +2,10 @@ from flask import Flask, render_template, jsonify, request, redirect
 from bigchaindb_driver.crypto import generate_keypair
 from bigchaindb_driver import BigchainDB
 from werkzeug.utils import secure_filename
+import datetime
 import ipfsapi
 import shutil
+import time
 import os
 
 app = Flask(__name__)
@@ -66,10 +68,17 @@ def upload():
                 },
             }
 
+            timestamp = int(time.time())
+
+            metadata = {
+                'timestamp': str(timestamp)
+            }
+
             prepared_creation_tx = bigchain.transactions.prepare(
                 operation='CREATE',
                 signers=public_key,
-                asset=payload
+                asset=payload,
+                metadata=metadata
             )
 
             fulfilled_creation_tx = bigchain.transactions.fulfill(
@@ -97,6 +106,10 @@ def download():
     transaction_id = request.form['tx_id']
     transaction = bigchain.transactions.retrieve(transaction_id)
     current_owner = transaction['outputs'][0]['public_keys'][0]
+    status = bigchain.transactions.status(transaction_id)['status']
+    timestamp = transaction['metadata']['timestamp']
+    file_timestamp = datetime.datetime.utcfromtimestamp(int(timestamp))
+
 
     if transaction['operation'] == 'TRANSFER':
         transaction = bigchain.transactions.retrieve(transaction['asset']['id'])
@@ -104,10 +117,11 @@ def download():
     file_name = transaction['asset']['data']['Name']
     file_hash = transaction['asset']['data']['Hash']
 
-    download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash
+    download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash #TODO COLOCAR CONSTANTE IPFS GATEWAY
 
     return render_template('download.html', file_name=file_name, download_link=download_link,
-                           current_owner=current_owner)
+                           file_hash=file_hash, file_timestamp=file_timestamp, current_owner=current_owner,
+                           transaction_id=transaction_id, status=status)
 
 
 @app.route('/transfer', methods=['POST'])
