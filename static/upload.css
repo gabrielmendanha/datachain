@@ -1,0 +1,45 @@
+body {
+    background: url("../static/sky.jpeg") no-repeat;
+    background-size: 100%;
+}
+
+html, body, .container-table {
+    height: 100%;
+}
+
+.container-table {
+    /*border: 1px solid red;*/
+    display: table;
+    width: 100%;
+}
+
+.vertical-center-row {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.container-fluid {
+    background: transparent !important;
+}
+
+.alert {
+    float: none;
+    margin: 0 auto;
+    max-width: 45%;
+}
+
+.panel {
+    float: none;
+    margin: 0 auto;
+    /*border: 1px solid purple;*/
+    white-space: nowrap;
+    max-width: 45%;
+}
+
+.row {
+    /*border: 1px solid blue;*/
+}
+
+.panel-body:hover {
+    background-color: whitesmoke;
+}

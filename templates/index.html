@@ -10,6 +10,13 @@
 </head>
 <body>
 
+{% if success == True %}
+<div class="alert alert-dismissible alert-success">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  Transação concluída com <strong>Sucesso</strong>.
+</div>
+{% endif %}
+
 <div class = "container">
     <a class="button" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
     <a class="button" data-toggle="modal" data-target="#modal-transfer">Transferir <i class="fa fa-handshake-o" aria-hidden="true"></i></a>

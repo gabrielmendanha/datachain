@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload</title>
+    <link rel="stylesheet" href="/static/upload.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+{#    <script src="https://use.fontawesome.com/63f0a28234.js"></script>#}
+</head>
+<body>
+<div class="container-fluid container-table" style="background:transparent;">
+    <div class="row vertical-center-row">
+        <div class="col-md-12">
+            <div class="alert alert-dismissible alert-warning">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h4>Aviso!</h4>
+              <p>Quarde as informações abaixo em um local seguro e não utilize serviços de armazenamento em núvem. Sem essas informações
+                  não será possível transferir ou consultar o seu documento.</p>
+            </div>
+            <div class="panel panel-success" >
+                <div class="panel-heading">
+                    <h3 class="panel-title">Detalhes</h3>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
+                    <p>Tx: {{ txid }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
+                    <p>Pública: {{ public_key }}</p>
+                </div>
+
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
+                    <p>Privada: {{ private_key }}</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,6 +14,7 @@ UPLOAD_FOLDER = '/uploads/'
 API_ENDPOINT = 'http://localhost:9984'
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+IPFS_GATEWAY = 'https://gateway.ipfs.io/ipfs/'
 
 app.config['DEBUG'] = True  # Comment this line before deploying
 ipfs = ipfsapi.connect('127.0.0.1', 5001)
@@ -88,17 +89,17 @@ def upload():
 
             txid = fulfilled_creation_tx['id']
 
-            trials = 0
-            while trials < 100:
-
-                try:
-                    if bigchain.transactions.status(txid).get('status') == 'valid':
-                        break
-
-                except bigchain.exceptions.NotFoundError:
-                    trials += 1
-
-            return "ok " + txid + " " + str(bigchain.transactions.status(txid))
+            # trials = 0
+            # while trials < 100:
+            #
+            #     try:
+            #         if bigchain.transactions.status(txid).get('status') == 'valid':
+            #             break
+            #
+            #     except bigchain.exceptions.NotFoundError:
+            #         trials += 1
+            #str(bigchain.transactions.status(txid))
+            return render_template('upload.html', txid=txid, public_key=public_key, private_key=private_key)
 
 
 @app.route('/download', methods=['POST'])
@@ -117,7 +118,7 @@ def download():
     file_name = transaction['asset']['data']['Name']
     file_hash = transaction['asset']['data']['Hash']
 
-    download_link = 'https://gateway.ipfs.io/ipfs/' + file_hash #TODO COLOCAR CONSTANTE IPFS GATEWAY
+    download_link = IPFS_GATEWAY + file_hash
 
     return render_template('download.html', file_name=file_name, download_link=download_link,
                            file_hash=file_hash, file_timestamp=file_timestamp, current_owner=current_owner,
@@ -166,16 +167,7 @@ def transfer():
 
     bigchain.transactions.send(fulfilled_transfer_tx)
 
-    return "ok"
-
-    # pair 1
-    # pub 7xaCsyEs3mmoL5cDG73HqHXGxLtrZRm6GGf4Kv4qq2kp
-    # priv 8qmV2CpRr1yxvYnsg8DYpAFZUs9rBMBNUbrfjFc7Kkxz
-    # tx id 80af48990a90c9761e9d2ad29762157dc60fca0ab2c93387bbbee9b708467515
-
-    # pair 2
-    # pub key 3EFKgepf6WFrZ4MjPUz1Wq2vPDAWpq2mazQedSPMnxPb
-    # priv key DQVrgoBQYtvdwcZMRYnJFXjBbygzb72DbuAUz7JxbXA
+    return render_template('index.html', success=True)
 
 
 def allowed_file(filename):
