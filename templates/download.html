@@ -25,27 +25,27 @@
                     <h3 class="panel-title">Detalhes</h3>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="Título original do documento.">
                     <p>Nome: {{ file_name }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Hash única e imutável para este documento.">
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="Hash única e imutável para este documento.">
                     <p>Hash: {{ file_hash }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Data e hora em que a transação foi recebida no sistema. Não reflete necessariamente a hora em que foi incluída na blockchain.">
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="Data e hora em que a transação foi recebida no sistema. Não reflete necessariamente a hora em que foi incluída na blockchain.">
                     <p>Upload em: {{ file_timestamp }}</p>
                 </div>
 
-                 <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Chave pública do dono nesta transação, que não é necessariamente o dono atual.">
+                 <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="Chave pública do dono nesta transação, que não é necessariamente o dono atual.">
                     <p >Dono: {{ current_owner }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="ID desta transação.">
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="ID desta transação.">
                     <p >Tx: {{ transaction_id }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Indica de esta transação é considerada válida ou inválida.">
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" data-original-title="Indica se esta transação é considerada válida ou inválida.">
                     <p >Status: {{ status }}</p>
                 </div>
 
@@ -53,6 +53,22 @@
                     <a href="{{ download_link }}" download="{{ file_name }}" class="btn btn-link">Download</a>
                 </div>
             </div>
+
+            {% if isOwner != '' %}
+                {% if isOwner == True %}
+            <div class="alert alert-dismissible alert-success">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h4>É o dono!</h4>
+              <p>A chave pública informada é idêntica a encontrada nesta transação.</p>
+            </div>
+                {% else %}
+            <div class="alert alert-dismissible alert-danger">
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+              <h4>Não é o dono!</h4>
+              <p>A chave pública informada é diferente da encontrada nesta transação.</p>
+            </div>
+                {% endif %}
+        {% endif %}
         </div>
     </div>
 </div>

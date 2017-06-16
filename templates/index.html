@@ -59,7 +59,7 @@
 
                         <div class="form-group">
                             <div class="text-center">
-                                <button type="submit" form="formUpload" class="btn btn-primary">Submit</button>
+                                <button type="submit" form="formUpload" class="btn btn-primary">Submeter</button>
                             </div>
                         </div>
                     </fieldset>
@@ -75,6 +75,9 @@
             <div class="modal-body">
                 <form id="form-download" class="form-horizontal" action={{ url_for('download') }} method="POST">
                     <fieldset>
+
+                        <legend>Consultar</legend>
+
                         <div class="form-group">
                             <label for="tx_id" class="col-lg-3 control-label">ID Transação</label>
                             <div class="col-lg-7">
@@ -82,9 +85,20 @@
                             </div>
                         </div>
 
+                        <legend>Validar</legend>
+
+                        <div class="form-group">
+                            <label for="publicKey" class="col-lg-2 control-label">Chave Pública</label>
+                            <div class="col-lg-10">
+                                <input name="pubKey" id="publicKey" type="text" placeholder="Opcional" class="form-control input">
+                            </div>
+                        </div>
+
+
+
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-5">
-                                <button type="submit" form="form-download" class="btn btn-primary">Submit</button>
+                                <button type="submit" form="form-download" class="btn btn-primary">Submeter</button>
                             </div>
                         </div>
                     </fieldset>
@@ -127,7 +141,7 @@
 
                         <div class="form-group">
                             <div class="text-center">
-                                <button type="submit" form="formTransfer" class="btn btn-primary">Submit</button>
+                                <button type="submit" form="formTransfer" class="btn btn-primary">Submeter</button>
                             </div>
                         </div>
                     </fieldset>

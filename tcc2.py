@@ -29,7 +29,6 @@ def index():
 @app.route('/generateKeys')
 def generate_keys():
     person = generate_keypair()
-    print(person)
     key_pair = {
         "public": person.public_key,
         "private": person.private_key
@@ -89,31 +88,31 @@ def upload():
 
             txid = fulfilled_creation_tx['id']
 
-            # trials = 0
-            # while trials < 100:
-            #
-            #     try:
-            #         if bigchain.transactions.status(txid).get('status') == 'valid':
-            #             break
-            #
-            #     except bigchain.exceptions.NotFoundError:
-            #         trials += 1
-            #str(bigchain.transactions.status(txid))
             return render_template('upload.html', txid=txid, public_key=public_key, private_key=private_key)
 
 
 @app.route('/download', methods=['POST'])
 def download():
+    iwOwner = None
     transaction_id = request.form['tx_id']
+    pub_key = request.form['pubKey']
     transaction = bigchain.transactions.retrieve(transaction_id)
     current_owner = transaction['outputs'][0]['public_keys'][0]
     status = bigchain.transactions.status(transaction_id)['status']
     timestamp = transaction['metadata']['timestamp']
     file_timestamp = datetime.datetime.utcfromtimestamp(int(timestamp))
 
-
     if transaction['operation'] == 'TRANSFER':
         transaction = bigchain.transactions.retrieve(transaction['asset']['id'])
+
+    if not pub_key:
+        isOwner = None
+
+    if pub_key == current_owner:
+        isOwner = True
+    else:
+        isOwner = False
+
 
     file_name = transaction['asset']['data']['Name']
     file_hash = transaction['asset']['data']['Hash']
@@ -122,7 +121,7 @@ def download():
 
     return render_template('download.html', file_name=file_name, download_link=download_link,
                            file_hash=file_hash, file_timestamp=file_timestamp, current_owner=current_owner,
-                           transaction_id=transaction_id, status=status)
+                           transaction_id=transaction_id, status=status, isOwner=isOwner)
 
 
 @app.route('/transfer', methods=['POST'])
