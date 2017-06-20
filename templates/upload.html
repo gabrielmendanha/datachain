@@ -17,7 +17,7 @@
             <div class="alert alert-dismissible alert-warning">
               <button type="button" class="close" data-dismiss="alert">&times;</button>
               <h4>Aviso!</h4>
-              <p>Quarde as informações abaixo em um local seguro e não utilize serviços de armazenamento em núvem. Sem essas informações
+              <p>Quarde as informações abaixo em um local seguro. Sem essas informações
                   não será possível transferir ou consultar o seu documento.</p>
             </div>
             <div class="panel panel-success" >
@@ -26,19 +26,27 @@
                 </div>
 
                 <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
-                    <p>Tx: {{ txid }}</p>
+                    <p>ID Transação: {{ txid }}</p>
                 </div>
 
                 <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
-                    <p>Pública: {{ public_key }}</p>
+                    <p>Chave Pública: {{ public_key }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
-                    <p>Privada: {{ private_key }}</p>
+                <div id="download-button" class="panel-body">
+                    <button onclick="voltar()" class="btn btn-primary">Voltar</button>
+                    <a href={{ url_for('uploadReceipt', tx_id=txid, pub_key=public_key, priv_key=private_key) }}  class="btn btn-link">Comprovante</a>
                 </div>
-
+            </div>
             </div>
         </div>
     </div>
 </body>
+
+<script>
+    function voltar() {
+        window.history.back();
+    }
+</script>
+
 </html>

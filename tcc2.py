@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, redirect
+from flask import Flask, render_template, jsonify, request, redirect, send_file
 from bigchaindb_driver.crypto import generate_keypair
 from bigchaindb_driver import BigchainDB
 from werkzeug.utils import secure_filename
@@ -7,6 +7,7 @@ import ipfsapi
 import shutil
 import time
 import os
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -24,6 +25,27 @@ bigchain = BigchainDB(API_ENDPOINT)
 @app.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
+
+@app.route('/comprovanteUpload/<tx_id>/<pub_key>')
+def uploadReceipt(tx_id, pub_key):
+
+    header = '############ Comprovante emitido em: ' + str(datetime.datetime.utcfromtimestamp(int(time.time()))) + ' ############'
+    body = '\n\t\t\t\tImportante!' \
+           '\nGuarde as informações abaixo em um local seguro.' \
+           '\nSem essas informações não será possível transferir ou consultar o seu documento.' \
+           '\nPor questões de segurança este comprovante não contêm a chave privada.' \
+           '\n—————————————————————————————————————————————————————————————————————————————————————' \
+           '\n| ID da transação: ' + tx_id + ' |' \
+           '\n| Chave Pública: ' + pub_key + '                       |' \
+           '\n—————————————————————————————————————————————————————————————————————————————————————'
+
+    comprovante = BytesIO()
+    comprovante.write((header + body).encode('utf-8'))
+    comprovante.seek(0)
+
+    return send_file(comprovante,
+                     attachment_filename="testing.txt",
+                     as_attachment=True)
 
 
 @app.route('/generateKeys')
@@ -112,7 +134,6 @@ def download():
         isOwner = True
     else:
         isOwner = False
-
 
     file_name = transaction['asset']['data']['Name']
     file_hash = transaction['asset']['data']['Hash']

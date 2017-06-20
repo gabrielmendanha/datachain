@@ -27,7 +27,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="formUpload" class="form-horizontal" action={{ url_for('upload') }} method="POST" enctype=multipart/form-data>
+                <form id="formUpload" class="form-horizontal" action="{{ url_for('upload') }}"  method="POST" enctype=multipart/form-data>
                     <fieldset>
                         <legend>Precisamos de sua chave...</legend>
                         <div class="form-group">
@@ -46,14 +46,14 @@
 
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-2">
-                                <button type="button" class="btn btn-success" id="gerarChaves">Gerar par de chaves</button>
+                                <a href="{{ url_for('generate_keys') }}" class="btn btn-success" id="gerarChaves">Gerar par de chaves</a>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="fileInput" class="col-lg-2 control-label">Arquivo</label>
                             <div class="col-lg-10">
-                                <input type="file" class="form-control" class="fileInput" name="file">
+                                <input type="file" class="form-control fileinput" name="file">
                             </div>
                         </div>
 
@@ -73,15 +73,13 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="form-download" class="form-horizontal" action={{ url_for('download') }} method="POST">
+                <form id="form-download" class="form-horizontal" action="{{ url_for('download') }}" method="POST">
                     <fieldset>
-
                         <legend>Consultar</legend>
-
                         <div class="form-group">
                             <label for="tx_id" class="col-lg-3 control-label">ID Transação</label>
                             <div class="col-lg-7">
-                                <input name="tx_id" type="text" class="form-control input">
+                                <input id="tx_id" name="tx_id" type="text" class="form-control input">
                             </div>
                         </div>
 
@@ -112,7 +110,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <form id="formTransfer" class="form-horizontal" action={{ url_for('transfer') }} method="POST" enctype=multipart/form-data>
+                <form id="formTransfer" class="form-horizontal" action="{{ url_for('transfer') }}"  method="POST" enctype=multipart/form-data>
                     <fieldset>
                         <legend>De</legend>
 
