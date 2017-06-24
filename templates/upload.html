@@ -5,10 +5,8 @@
     <title>Upload</title>
     <link rel="stylesheet" href="/static/upload.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-{#    <script src="https://use.fontawesome.com/63f0a28234.js"></script>#}
 </head>
 <body>
 <div class="container-fluid container-table" style="background:transparent;">
@@ -25,17 +23,17 @@
                     <h3 class="panel-title">Detalhes</h3>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
-                    <p>ID Transação: {{ txid }}</p>
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Isto serve para localizar o seu documento.">
+                    <p>Referência do Documento: {{ txid }}</p>
                 </div>
 
-                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Título original do documento.">
-                    <p>Chave Pública: {{ public_key }}</p>
+                <div class="panel-body" data-toggle="tooltip" data-placement="left" title="" data-original-title="Representa o dono deste documento.">
+                    <p>Assinatura Pública: {{ public_key }}</p>
                 </div>
 
                 <div id="download-button" class="panel-body">
                     <button onclick="voltar()" class="btn btn-primary">Voltar</button>
-                    <a href={{ url_for('uploadReceipt', tx_id=txid, pub_key=public_key, priv_key=private_key) }}  class="btn btn-link">Comprovante</a>
+                    <a href='{{ url_for('uploadReceipt', tx_id=txid, pub_key=public_key, priv_key=private_key) }}'  class="btn btn-link">Comprovante</a>
                 </div>
             </div>
             </div>
@@ -47,6 +45,11 @@
     function voltar() {
         window.history.back();
     }
+
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip();
+    });
+
 </script>
 
 </html>

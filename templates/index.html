@@ -4,18 +4,10 @@
     <meta charset="UTF-8">
     <title>TCC2</title>
     <link rel="stylesheet" href="/static/index.css">
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
     <script src="https://use.fontawesome.com/63f0a28234.js"></script>
 </head>
 <body>
-
-{% if success == True %}
-<div class="alert alert-dismissible alert-success">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  Transação concluída com <strong>Sucesso</strong>.
-</div>
-{% endif %}
 
 <div class = "container">
     <a class="button" data-toggle="modal" data-target="#modal-upload">Upload <i class="fa fa-cloud-upload" aria-hidden="true"></i></a>
@@ -23,13 +15,30 @@
     <a class="button" data-toggle="modal" data-target="#modal-download">Consultar <i class="fa fa-search" aria-hidden="true"></i></a>
 </div>
 
+{% if success == True %}
+    <div class="containerAlert alert alert-dismissible alert-success">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      Transação concluída com <strong>Sucesso</strong>. Clique <strong>aqui</strong> para realizar o download do comprovante.
+    </div>
+{% endif %}
+
+{% if error == True %}
+    <div class="containerAlert alert alert-dismissible alert-danger">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      {{ message }}
+    </div>
+{% endif %}
+
 <div class="modal" id="modal-upload">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Upload de Documento</h4>
+            </div>
             <div class="modal-body">
                 <form id="formUpload" class="form-horizontal" action="{{ url_for('upload') }}"  method="POST" enctype=multipart/form-data>
                     <fieldset>
-                        <legend>Precisamos de sua chave...</legend>
                         <div class="form-group">
                             <label for="publicKey" class="col-lg-2 control-label">Pública</label>
                             <div class="col-lg-10">
@@ -45,12 +54,6 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-lg-10 col-lg-offset-2">
-                                <a href="{{ url_for('generate_keys') }}" class="btn btn-success" id="gerarChaves">Gerar par de chaves</a>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
                             <label for="fileInput" class="col-lg-2 control-label">Arquivo</label>
                             <div class="col-lg-10">
                                 <input type="file" class="form-control fileinput" name="file">
@@ -60,8 +63,10 @@
                         <div class="form-group">
                             <div class="text-center">
                                 <button type="submit" form="formUpload" class="btn btn-primary">Submeter</button>
+                                <a href="{{ url_for('generate_keys') }}" class="btn btn-success" id="gerarChaves">Gerar par de chaves</a>
                             </div>
                         </div>
+
                     </fieldset>
                 </form>
             </div>
@@ -70,29 +75,28 @@
 </div>
 
 <div class="modal" id="modal-download">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Consultar Documento</h4>
+            </div>
             <div class="modal-body">
                 <form id="form-download" class="form-horizontal" action="{{ url_for('download') }}" method="POST">
                     <fieldset>
-                        <legend>Consultar</legend>
                         <div class="form-group">
-                            <label for="tx_id" class="col-lg-3 control-label">ID Transação</label>
+                            <label for="tx_id" class="col-lg-5 control-label">Referência do Documento</label>
                             <div class="col-lg-7">
                                 <input id="tx_id" name="tx_id" type="text" class="form-control input">
                             </div>
                         </div>
 
-                        <legend>Validar</legend>
-
                         <div class="form-group">
-                            <label for="publicKey" class="col-lg-2 control-label">Chave Pública</label>
-                            <div class="col-lg-10">
+                            <label for="publicKey" class="col-lg-4 control-label" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Utilize este campo para saber se o documento foi submetido por esta assinatura.">Assinatura Pública</label>
+                            <div class="col-lg-8">
                                 <input name="pubKey" id="publicKey" type="text" placeholder="Opcional" class="form-control input">
                             </div>
                         </div>
-
-
 
                         <div class="form-group">
                             <div class="col-lg-10 col-lg-offset-5">
@@ -109,30 +113,34 @@
 <div class="modal" id="modal-transfer">
     <div class="modal-dialog">
         <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">Transferência de Documento</h4>
+            </div>
             <div class="modal-body">
                 <form id="formTransfer" class="form-horizontal" action="{{ url_for('transfer') }}"  method="POST" enctype=multipart/form-data>
                     <fieldset>
                         <legend>De</legend>
 
                         <div class="form-group">
-                            <label for="sender-privateKey" class="col-lg-2 control-label">Privada</label>
-                            <div class="col-lg-10">
-                                <input name="sender-privKey" id="sender-privateKey" type="text" class="form-control">
+                            <label for="tx_id_send" class="col-lg-5 control-label">Referência do Documento</label>
+                            <div class="col-lg-7">
+                                <input id="tx_id_send" name="tx_id_send" type="text" class="form-control input">
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="tx_id_send" class="col-lg-2 control-label">Tx ID</label>
-                            <div class="col-lg-10">
-                                <input name="tx_id_send" type="text" class="form-control input">
+                            <label for="sender-privateKey" class="col-lg-4 control-label">Assinatura Privada</label>
+                            <div class="col-lg-8">
+                                <input name="sender-privKey" id="sender-privateKey" type="text" class="form-control">
                             </div>
                         </div>
 
                         <legend>Para</legend>
 
                         <div class="form-group">
-                            <label for="dest-publicKey" class="col-lg-2 control-label">Pública</label>
-                            <div class="col-lg-10">
+                            <label for="dest-publicKey" class="col-lg-4 control-label">Assinatura Pública</label>
+                            <div class="col-lg-8">
                                 <input name="dest-pubKey" id="dest-publicKey" type="text" class="form-control input">
                             </div>
                         </div>
@@ -148,6 +156,10 @@
         </div>
     </div>
 </div>
+<footer id = "footer">
+<p>Made with <span style="color: #e25555;">&#9829;</span> by <a target="_blank" style="text-decoration: none; background: transparent; color:inherit;" href="https://github.com/gabrielmendanha">Gabriel Mendanha</a> in Quixadá</p>
+</footer>
+
 
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
@@ -157,13 +169,6 @@
 </script>
 
 <script>
-    $(document).ready(function () {
-        $('#gerarChaves').click(function () {
-            $.getJSON($SCRIPT_ROOT + '/generateKeys', function(data) {
-                $('#publicKey').val(data.public);
-                $('#privateKey').val(data.private);
-            });
-        });
-    })
+    $("[data-toggle='tooltip']").tooltip();
 </script>
 </html>

@@ -1,31 +1,54 @@
 html {
-    background: url("../static/sky.jpeg") no-repeat;
+    background: #c1bdba;
     background-size: 100%;
 }
 
 .button {
     display: inline-block;
-    border: 2px solid dimgrey;
+    border: 0;
+    letter-spacing: .1em;
     margin: 20px;
     padding: 10px;
-    width: 103px;
-    line-height: 50px;
+    width: 160px;
+    line-height: 20px;
+    color: #ffffff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.6rem;
     text-align: center;
     cursor: pointer;
-    color: dimgrey;
-    border-radius: 10%;
-    box-shadow: 0 0 5px black;
+    background: #1ab188;
 }
 
 .button:hover{
     text-decoration: none;
-    color: dimgrey;
-    box-shadow: 0 0 10px black;
+    color: #ffffff;
+    background: #179b77;
 }
 
 .container {
-    max-width: 50%;
     position: fixed;
     top: 50%;
-    transform: translate(63%, -75%);
+    transform: translate(50%, -75%);
+    background: rgba(19, 35, 47, 0.9);
+    padding: 20px;
+    width: auto !important;
+    margin: auto;
+    border-radius: 4px;
+    box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+}
+
+.containerAlert{
+    position: fixed;
+    top: 50%;
+    transform: translate(57%, 75%);
+    width: 600px;
+}
+
+footer {
+    font-style: italic;
+    margin-left: 20px;
+    background: transparent;
+    position: fixed;
+    bottom: 0;
 }

@@ -5,21 +5,20 @@
     <title>Download</title>
      <link rel="stylesheet" href="/static/download.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/lumen/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-gv0oNvwnqzF6ULI9TVsSmnULNb3zasNysvWwfT/s4l8k5I+g6oFz9dye0wg3rQ2Q" crossorigin="anonymous">
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-{#    <script src="https://use.fontawesome.com/63f0a28234.js"></script>#}
+    <script src="https://use.fontawesome.com/63f0a28234.js"></script>
 </head>
 <body>
 
 <div class="container-fluid container-table" style="background:transparent;">
     <div class="row vertical-center-row">
 
-        <div class="col-md-7">
+        <div class="col-md-6">
             <object class="file_display" data="{{ download_link }}"></object>
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div class="panel panel-info">
                 <div class="panel-heading">
                     <h3 class="panel-title">Detalhes</h3>
@@ -50,23 +49,25 @@
                 </div>
 
                 <div id="download-button" class="panel-body">
+                    <button onclick="voltar()" class="btn btn-primary">Voltar</button>
                     <a href="{{ download_link }}" download="{{ file_name }}" class="btn btn-link">Download</a>
                 </div>
+
             </div>
 
-            {% if isOwner != '' %}
+            {% if isOwner != None %}
                 {% if isOwner == True %}
-            <div class="alert alert-dismissible alert-success">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h4>É o dono!</h4>
-              <p>A chave pública informada é idêntica a encontrada nesta transação.</p>
-            </div>
+                    <div class="alert alert-dismissible alert-success">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <h4>Confere!</h4>
+                      <p>A assinatura pública informada é idêntica a encontrada nesta transação.</p>
+                    </div>
                 {% else %}
-            <div class="alert alert-dismissible alert-danger">
-              <button type="button" class="close" data-dismiss="alert">&times;</button>
-              <h4>Não é o dono!</h4>
-              <p>A chave pública informada é diferente da encontrada nesta transação.</p>
-            </div>
+                    <div class="alert alert-dismissible alert-danger">
+                      <button type="button" class="close" data-dismiss="alert">&times;</button>
+                      <h4>Não confere!</h4>
+                      <p>A assinatura pública informada é diferente da encontrada nesta transação.</p>
+                    </div>
                 {% endif %}
         {% endif %}
         </div>
@@ -79,6 +80,11 @@
     $(function () {
         $("[data-toggle='tooltip']").tooltip();
     });
+
+    function voltar() {
+        window.history.back();
+    }
+
 </script>
 
 </html>

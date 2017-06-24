@@ -1,5 +1,5 @@
 body {
-    background: url("../static/sky.jpeg") no-repeat;
+    background: #c1bdba !important;
     background-size: 100%;
 }
 
@@ -33,7 +33,7 @@ html, body, .container-table {
     margin: 0 auto;
     /*border: 1px solid purple;*/
     white-space: nowrap;
-    max-width: 45%;
+    max-width: 60%;
 }
 
 .row {
