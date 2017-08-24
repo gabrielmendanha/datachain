@@ -12,7 +12,7 @@ import time
 import os
 from io import BytesIO
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 UPLOAD_FOLDER = '/uploads/'
 API_ENDPOINT = 'http://localhost:9984'
@@ -20,17 +20,17 @@ APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 ALLOWED_EXTENSIONS = {'pdf'}
 IPFS_GATEWAY = 'https://gateway.ipfs.io/ipfs/'
 
-app.config['DEBUG'] = True  # Comment this line before deploying
-ipfs = ipfsapi.connect('127.0.0.1', 5001)
+application.config['DEBUG'] = True  # Comment this line before deploying
+ipfs = ipfsapi.connect('localhost', 5001)
 bigchain = BigchainDB(API_ENDPOINT)
 
 
-@app.route('/', methods=['POST', 'GET'])
+@application.route('/', methods=['POST', 'GET'])
 def index():
     return render_template('index.html')
 
 
-@app.route('/comprovanteUpload/<tx_id>/<pub_key>')
+@application.route('/comprovanteUpload/<tx_id>/<pub_key>')
 def uploadReceipt(tx_id, pub_key):
 
     transaction = bigchain.transactions.retrieve(tx_id)
@@ -47,8 +47,8 @@ def uploadReceipt(tx_id, pub_key):
            '\nSem essas informações não será possível transferir ou consultar o seu documento.' \
            '\nPor questões de segurança este comprovante não contêm a chave privada.' \
            '\n—————————————————————————————————————————————————————————————————————————————————————' \
-           '\n| ID da transação: ' + tx_id + ' |' \
-           '\n| Chave Pública: ' + pub_key + '                       |' \
+           '\n| Referência do Documento: ' + tx_id + ' |' \
+           '\n| Assinatura Pública: ' + pub_key + '                       |' \
            '\n| Nome do documento:' + file_name + \
            '\n—————————————————————————————————————————————————————————————————————————————————————'
 
@@ -61,7 +61,7 @@ def uploadReceipt(tx_id, pub_key):
                      as_attachment=True)
 
 
-@app.route('/generateKeys')
+@application.route('/generateKeys')
 def generate_keys():
     person = generate_keypair()
     header = '############################ Emitido em: ' + str(
@@ -79,13 +79,15 @@ def generate_keys():
     return send_file(comprovante, attachment_filename="Par Assinaturas.txt", as_attachment=True)
 
 
-@app.route('/upload', methods=['POST'])
+@application.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
 
         file = request.files['file']
         public_key = request.form['pubKey']
+        public_key = public_key.strip()
         private_key = request.form['privKey']
+        private_key = private_key.strip()
 
         # Verify if file exists and is valid
         if 'file' not in request.files or file.filename == '':
@@ -114,7 +116,7 @@ def upload():
             'data': {
                 'hash': ipfs_file['Hash'],
                 'name': ipfs_file['Name']
-            },
+            }
         }
 
         timestamp = int(time.time())
@@ -128,7 +130,7 @@ def upload():
                 operation='CREATE',
                 signers=public_key,
                 asset=payload,
-                metadata=metadata
+                metadata=metadata,
             )
         except builtins.ValueError:
             return render_template('index.html', error=True, message="Assinatura pública não está completa.")
@@ -143,18 +145,23 @@ def upload():
         except bigchaindb_driver.exceptions.MissingPrivateKeyError:
             return render_template('index.html', error=True, message="O par de assinaturas não combina.")
 
-        bigchain.transactions.send(fulfilled_creation_tx)
+        try:
+            bigchain.transactions.send(fulfilled_creation_tx)
+
+        except:
+            return render_template('index.html', error=True, message="Erro inesperado.")
 
         txid = fulfilled_creation_tx['id']
 
         return render_template('upload.html', txid=txid, public_key=public_key, private_key=private_key)
 
 
-@app.route('/download', methods=['POST'])
+@application.route('/download', methods=['POST'])
 def download():
 
     transaction_id = request.form['tx_id']
     pub_key = request.form['pubKey']
+    pub_key = pub_key.strip()
 
     # Verify if transaction id is fulfilled
     if not transaction_id:
@@ -194,7 +201,7 @@ def download():
                            transaction_id=transaction_id, status=status, isOwner=isOwner)
 
 
-@app.route('/transfer', methods=['POST'])
+@application.route('/transfer', methods=['POST'])
 def transfer():
     transaction_id = request.form['tx_id_send']
     sender_private_key = request.form['sender-privKey']
@@ -230,7 +237,7 @@ def transfer():
         'fulfillment': output['condition']['details'],
         'fulfills': {
             'output': output_index,
-            'txid': transaction['id'],
+            'transaction_id': transaction['id'],
         },
         'owners_before': output['public_keys'],
     }
@@ -269,4 +276,4 @@ def allowed_file(filename):
 
 
 if __name__ == '__main__':
-    app.run()
+    application.run()
